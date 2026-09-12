@@ -60,7 +60,11 @@ public class CommunityMessageServiceImpl implements CommunityMessageService {
     private User requireMember(Long communityId) {
         User user = currentUser.get();
         Community community = findCommunity(communityId);
-        if (community.getMembers().stream().noneMatch(member -> member.getId().equals(user.getId()))) {
+        if (community.getMembers().stream().noneMatch(member ->
+                member.getUser() != null &&
+                        member.getUser().getId().equals(user.getId()) &&
+                        member.getLeftAt() == null
+        )) {
             throw new AccessDeniedException("Join this community to participate");
         }
         return user;

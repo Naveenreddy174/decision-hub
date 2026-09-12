@@ -3,13 +3,11 @@ package com.decisionhub.backend.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Table(
-        name = "community_memberships",
+        name = "community_members",
         uniqueConstraints = @UniqueConstraint(
-                name = "uk_community_membership",
+                name = "uk_community_member",
                 columnNames = {"community_id", "user_id"}
         )
 )
@@ -18,7 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CommunityMemberShip {
+public class CommunityMember {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,16 +29,4 @@ public class CommunityMemberShip {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
-    @Column(nullable = false)
-    private LocalDateTime joinedAt;
-
-    private LocalDateTime leftAt;
-
-    @PrePersist
-    protected void onCreate() {
-        if (joinedAt == null) {
-            joinedAt = LocalDateTime.now();
-        }
-    }
 }
