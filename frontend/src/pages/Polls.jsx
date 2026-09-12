@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import DashboardLayout from "../components/DashboardLayout";
 import Toast from "../components/Toast";
 
-const API = "http://localhost:8080";
+import { API } from "../config/api";
 
 // ==========================================
 // WINNER / RESULT CALCULATION

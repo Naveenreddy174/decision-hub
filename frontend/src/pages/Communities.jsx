@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DashboardLayout from "../components/DashboardLayout";
 import Toast from "../components/Toast";
+import ConfirmDialog from "../components/ConfirmDialog";
 
-const API = "http://localhost:8080";
+import { API } from "../config/api";
 
 function Communities() {
   const navigate = useNavigate();
@@ -22,6 +23,7 @@ function Communities() {
 
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState(null);
 
   const headers = () => ({
     Authorization:
@@ -226,15 +228,7 @@ function Communities() {
      DELETE COMMUNITY
   ========================= */
 
-  const deleteCommunity = async (community) => {
-    if (
-        !window.confirm(
-            `Delete ${community.communityName}?`
-        )
-    ) {
-      return;
-    }
-
+  const performDeleteCommunity = async (community) => {
     try {
       const response = await fetch(
           `${API}/api/communities/${community.id}`,
@@ -285,6 +279,10 @@ function Communities() {
     }
   };
 
+  const deleteCommunity = (community) => {
+    setDeleteTarget(community);
+  };
+
 
   return (
       <DashboardLayout
@@ -296,6 +294,19 @@ function Communities() {
             message={message}
             isError={isError}
         />
+
+        {deleteTarget && (
+          <ConfirmDialog
+            title={`Delete ${deleteTarget.communityName}?`}
+            message="This action cannot be undone."
+            onCancel={() => setDeleteTarget(null)}
+            onConfirm={() => {
+              const community = deleteTarget;
+              setDeleteTarget(null);
+              performDeleteCommunity(community);
+            }}
+          />
+        )}
 
 
         <style>{`

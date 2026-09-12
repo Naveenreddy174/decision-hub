@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import DashboardLayout from "../components/DashboardLayout";
 import waveIcon from "../assets/wave-icon.png";
 
-const API = "http://localhost:8080";
+import { API } from "../config/api";
 
 function Home() {
   const navigate = useNavigate();
