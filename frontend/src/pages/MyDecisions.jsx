@@ -246,18 +246,6 @@ function MyDecisions() {
                 await response.text();
 
 
-            console.log(
-                "Delete status:",
-                response.status
-            );
-
-
-            console.log(
-                "Delete response:",
-                result
-            );
-
-
             if (!response.ok) {
 
                 setIsError(true);

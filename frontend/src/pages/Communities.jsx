@@ -138,7 +138,12 @@ function Communities() {
           "Community created successfully."
       );
 
-      load();
+      // In-place update: add new community to list
+      if (data && data.id) {
+        setCommunities((prev) => [data, ...prev]);
+      } else {
+        load();
+      }
 
     } catch (error) {
       notify(
@@ -194,7 +199,14 @@ function Communities() {
         setOpened(null);
       }
 
-      load();
+      // Fast in-place state update without full reload
+      if (data && data.id) {
+        setCommunities((prev) =>
+          prev.map((c) => (c.id === community.id ? data : c))
+        );
+      } else {
+        load();
+      }
 
     } catch (error) {
       notify(
@@ -242,16 +254,6 @@ function Communities() {
           .json()
           .catch(() => ({}));
 
-      console.log(
-          "Delete status:",
-          response.status
-      );
-
-      console.log(
-          "Delete response:",
-          data
-      );
-
       if (!response.ok) {
         throw new Error(
             data.message ||
@@ -263,14 +265,10 @@ function Communities() {
           "Community deleted."
       );
 
-      load();
+      // In-place removal
+      setCommunities((prev) => prev.filter((c) => c.id !== community.id));
 
     } catch (error) {
-      console.error(
-          "Delete community error:",
-          error
-      );
-
       notify(
           error.message ||
           "Unable to delete community.",

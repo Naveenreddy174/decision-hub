@@ -18,8 +18,7 @@ function Home() {
   ========================================================= */
 
   useEffect(() => {
-    fetchDecisions();
-    fetchProfile();
+    Promise.allSettled([fetchDecisions(), fetchProfile()]);
   }, []);
 
   const fetchProfile = async () => {

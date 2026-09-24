@@ -156,11 +156,9 @@ public class CommunityServiceImpl implements CommunityService {
         }
 
         /*
-         * Delete all community messages first.
+         * Delete all community messages first using targeted delete.
          */
-        messages.deleteAll(
-                messages.findByCommunityIdOrderByCreatedAtAsc(id)
-        );
+        messages.deleteByCommunityId(id);
 
         /*
          * Community has cascade = ALL and orphanRemoval = true
